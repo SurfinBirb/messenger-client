@@ -1,0 +1,6 @@
+  <config>
+    <clientConfiguration>
+        <serverAddress>127.0.0.1</serverAddress>
+        <serverPort>666</serverPort>
+    </clientConfiguration>
+  </config>
