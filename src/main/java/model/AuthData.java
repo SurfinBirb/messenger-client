@@ -16,11 +16,11 @@ public class AuthData {
     private String login;
     private String hash;
 
-     Long getId() {
-        return id;
+     Long getClientId() {
+        return clientId;
     }
 
-    private Long id;
+    private Long clientId;
 
     boolean isLogged() {
         return logged;
@@ -28,10 +28,10 @@ public class AuthData {
 
     private boolean logged = false;
 
-     AuthData(String login, String hash, Long id, boolean logged) {
+     AuthData(String login, String hash, Long clientId, boolean logged) {
         this.login = login;
         this.hash = hash;
-        this.id = id;
+        this.clientId = clientId;
         this.logged = logged;
     }
 

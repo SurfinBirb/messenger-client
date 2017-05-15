@@ -5,10 +5,12 @@ import console.CommandLine;
  */
 public class Main {
     public static void main(String[] args) throws Exception{
-
-        if (args[0].equals("console")){
+    try {
+        if (args[0].equals("console")) {
             new CommandLine().launch();
         }
-
+    }catch (Exception e){
+        e.printStackTrace();
+    }
     }
 }

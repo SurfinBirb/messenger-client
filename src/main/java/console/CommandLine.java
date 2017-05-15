@@ -53,7 +53,8 @@ public class CommandLine {
 
                 if (arguments[0].equals("send") && arguments[1].matches("[0-9][0-9]*") && isLive){
                     StringBuilder sb = new StringBuilder();
-                    for (int index = 2; index <= arguments.length; index++) sb.append(arguments[index]);
+                    for (int index = 2; index < arguments.length; index++) sb.append(arguments[index]);
+                    System.out.println(sb.toString());
                     Interface.sendMessage(Long.parseLong(arguments[1]), sb.toString());
                 }
 

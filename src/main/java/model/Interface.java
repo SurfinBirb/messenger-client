@@ -11,26 +11,17 @@ public class Interface {
     /**
      * Список комнат
      */
-    static LinkedList<Room> rooms;
+    static LinkedList<Room> rooms = new LinkedList<>();
 
     /**
      *Мапа комнат
      */
-    private static TreeMap<Long, Room> roomMap;
+    private static TreeMap<Long, Room> roomMap = Storage.getInstance().getRooms();
 
     /**
      * Мапа комнат, создаваемая конструктором, через нее отслеживаются изменения
      */
-    private static TreeMap<Long, Room> oldMap;
-
-    public Interface() {
-        Storage storage = Storage.getInstance();
-        rooms = new LinkedList<>();
-        oldMap = new TreeMap<>();
-        roomMap = storage.getRooms();
-
-        rooms.addAll(storage.getRooms().values());
-    }
+    private static TreeMap<Long, Room> oldMap = new TreeMap<>();
 
     /**
      * Послать сообщение всем в комнате
@@ -41,7 +32,8 @@ public class Interface {
         Storage storage = Storage.getInstance();
         Message message = new Message(roomId, null, storage.getClientId(), text);
         Packet packet = new Packet("message",message,null, storage.getClientId(), null,null);
-        storage.getOutputQueue().add(packet);
+        String xmlPacket = new Packer().pack(packet);
+        Sender.send(xmlPacket);
     }
 
 
@@ -85,7 +77,7 @@ public class Interface {
                 if(Storage.getInstance().isDataLoaded()){
                     oldMap.putAll(Storage.getInstance().getRooms());
                     break;
-                }else System.out.println("No response");
+                }
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

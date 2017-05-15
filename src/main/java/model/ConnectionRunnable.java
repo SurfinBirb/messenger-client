@@ -1,6 +1,7 @@
 package model;
 
 import javax.net.ssl.SSLSocket;
+import java.io.DataInputStream;
 import java.io.InputStream;
 
 /**
@@ -52,8 +53,9 @@ public class ConnectionRunnable implements Runnable {
                 }
                 if (packet.getType().equals("auth")){
                     if (packet.getAuthData().isLogged()){
-                        clientId = packet.getAuthData().getId();
+                        clientId = packet.getAuthData().getClientId();
                         storage.setClientId(clientId);
+                        System.out.println("Authorised as " + clientId);
                         storage.setRooms(packet.getRoomMap());
                         Interface.rooms.addAll(packet.getRoomMap().values());
                     }else {
@@ -78,14 +80,11 @@ public class ConnectionRunnable implements Runnable {
      * @throws Exception
      */
     private String listen(InputStream socketInputStream) throws Exception{
-        int c;
-        StringBuilder stringBuilder = new StringBuilder();
-        while ( (c = socketInputStream.read()) != -1){
-            stringBuilder.append((char) c);
-        }
-        stringBuilder.deleteCharAt(0);
-        stringBuilder.deleteCharAt(0);
-        System.out.println("\nGET:\n" + stringBuilder.toString() + "\n");
-        return stringBuilder.toString();
+
+        DataInputStream dataInputStream = new DataInputStream(socketInputStream);
+        String line = dataInputStream.readUTF();
+        System.out.println("\nGET:\n" + line + "\n");
+        return line;
+
     }
 }
