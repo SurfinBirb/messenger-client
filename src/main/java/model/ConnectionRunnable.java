@@ -3,6 +3,7 @@ package model;
 import javax.net.ssl.SSLSocket;
 import java.io.DataInputStream;
 import java.io.InputStream;
+import java.util.LinkedList;
 
 /**
  * Created by SurfinBirb on 07.05.2017.
@@ -43,9 +44,7 @@ public class ConnectionRunnable implements Runnable {
                 Packet packet = new Unpacker().unpack(xmlPacket);
                 int attempts = 0;
                 if (packet.getType().equals("message")){
-                    if (packet.getType().equals("Message")) {
-                        storage.getRooms().get(packet.getRoom().getRoomId()).getMessages().add(packet.getMessage());
-                    }
+                        storage.getRooms().get(packet.getMessage().roomid).getMessages().add(packet.getMessage());
                 }
                 if (packet.getType().equals("room")){
                     storage.getRooms().put(packet.getRoom().getRoomId(), packet.getRoom());
@@ -56,6 +55,11 @@ public class ConnectionRunnable implements Runnable {
                         clientId = packet.getAuthData().getClientId();
                         storage.setClientId(clientId);
                         System.out.println("Authorised as " + clientId);
+                        for(Room room: packet.getRoomMap().values()) {
+                            if (room != null){
+                                room.setMessages(new LinkedList<>());
+                            }
+                        }
                         storage.setRooms(packet.getRoomMap());
                         Interface.rooms.addAll(packet.getRoomMap().values());
                     }else {
