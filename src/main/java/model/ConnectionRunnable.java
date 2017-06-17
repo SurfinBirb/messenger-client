@@ -1,9 +1,13 @@
 package model;
 
+import javafx.beans.property.SimpleListProperty;
+import javafx.collections.FXCollections;
+
 import javax.net.ssl.SSLSocket;
 import java.io.DataInputStream;
 import java.io.InputStream;
 import java.util.LinkedList;
+import java.util.TreeMap;
 
 /**
  * Created by SurfinBirb on 07.05.2017.
@@ -45,6 +49,7 @@ public class ConnectionRunnable implements Runnable {
                 int attempts = 0;
                 if (packet.getType().equals("message")){
                         storage.getRooms().get(packet.getMessage().roomid).getMessages().add(packet.getMessage());
+                        Interface.roomObservableMap.get(packet.getMessage().roomid).get().add(packet.getMessage());
                 }
                 if (packet.getType().equals("room")){
                     storage.getRooms().put(packet.getRoom().getRoomId(), packet.getRoom());
@@ -58,10 +63,13 @@ public class ConnectionRunnable implements Runnable {
                         for(Room room: packet.getRoomMap().values()) {
                             if (room != null){
                                 room.setMessages(new LinkedList<>());
+                                Interface.roomObservableMap.get().put(room.getRoomId(), new SimpleListProperty<>(FXCollections.observableList(new LinkedList<>())));
+                                if (Interface.defaultRoomId == null) Interface.defaultRoomId = room.getRoomId();
                             }
                         }
                         storage.setRooms(packet.getRoomMap());
-                        Interface.rooms.addAll(packet.getRoomMap().values());
+                        Interface.setLogged(true);
+
                     }else {
                         attempts++;
                         if (attempts == 3){

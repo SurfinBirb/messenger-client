@@ -13,7 +13,7 @@ public class Storage {
     private static volatile Storage instance;
     private volatile BlockingDeque<Packet> outputQueue;
     private volatile TreeMap<Long,Room> rooms;
-    private boolean dataLoaded;
+    private volatile boolean dataLoaded;
 
     public Long getClientId() {
         return clientId;

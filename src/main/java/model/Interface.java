@@ -1,5 +1,10 @@
 package model;
 
+import javafx.beans.property.*;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
+import java.io.FileOutputStream;
 import java.util.LinkedList;
 import java.util.TreeMap;
 
@@ -7,6 +12,33 @@ import java.util.TreeMap;
  * Created by SurfinBirb on 07.05.2017.
  */
 public class Interface {
+
+
+    /**
+     * @return true если авторизация прошла успешно
+     */
+    public static boolean isLogged() {
+        return logged.get();
+    }
+
+    /**
+     * @return logged property
+     */
+    public static BooleanProperty loggedProperty() {
+        return logged;
+    }
+
+    /**
+     * @param logged true if logged
+     */
+    static void setLogged(boolean logged) {
+        Interface.logged.set(logged);
+    }
+
+    /**
+     * boolean property - is logged?
+     */
+    private static BooleanProperty logged = new SimpleBooleanProperty();
 
     /**
      * Список комнат
@@ -22,6 +54,20 @@ public class Interface {
      * Мапа комнат, создаваемая конструктором, через нее отслеживаются изменения
      */
     private static TreeMap<Long, Room> oldMap = new TreeMap<>();
+
+    /**
+     * Идентификатор комнаты, в которой находится клиент сразу после авторизации
+     */
+    public static Long defaultRoomId;
+
+    /**
+     * @return TreeMap комнат
+     */
+    public static TreeMap<Long, Room> getRoomMap(){return Storage.getInstance().getRooms();}
+
+
+    public static MapProperty<Long, ListProperty<Message>> roomObservableMap = new SimpleMapProperty<>(FXCollections.observableHashMap());
+
 
     /**
      * Послать сообщение всем в комнате
@@ -97,6 +143,6 @@ public class Interface {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
+
 }
