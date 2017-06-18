@@ -154,6 +154,19 @@ public class Interface {
         Sender.send(xmlPacket);
     }
 
+    public static void sendRoomInvitation(Long roomId, Long clientId){
+        Packet packet = new Packet(
+                "roomInvitation",
+                null,
+                new Room(Storage.getInstance().getClientId(),roomId,null,null,null),
+                clientId,
+                null,
+                null
+                );
+        String xmlPacket = new Packer().pack(packet);
+        Sender.send(xmlPacket);
+    }
+
     /**
      * Запустить клиент
      */

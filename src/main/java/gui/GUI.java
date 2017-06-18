@@ -57,6 +57,8 @@ public class GUI extends Application {
         stage.setResizable(true);
         stage.setScene(scene);
         stage.setTitle("Client");
+        stage.setMinHeight(412);
+        stage.setMinWidth(600);
         stage.show();
     }
 

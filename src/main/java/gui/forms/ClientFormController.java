@@ -10,10 +10,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
@@ -110,6 +107,28 @@ public class ClientFormController {
 
         roomListView.setItems(roomObservableList);
 
+        final ContextMenu contextMenu = new ContextMenu();
+        MenuItem invite = new MenuItem("Invite");
+        invite.setOnAction(actionEvent -> Platform.runLater(() -> {
+            try {
+                Stage stage = new Stage();
+                FXMLLoader fxmlLoader = new FXMLLoader();
+                fxmlLoader.setLocation(Paths.get("src", "main", "java", "gui", "forms", "InviteForm.fxml").toUri().toURL());
+                AnchorPane clientForm = (AnchorPane) fxmlLoader.load();
+                Scene scene = new Scene(clientForm);
+                stage.setResizable(false);
+                stage.setScene(scene);
+                stage.setTitle(roomListView.getSelectionModel().getSelectedItem().getRoomName());
+                InviteForm controller = fxmlLoader.getController();
+                controller.setRoomId(roomListView.getSelectionModel().getSelectedItem().getRoomId());
+                stage.show();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }));
+        contextMenu.getItems().addAll(invite);
+        roomListView.setContextMenu(contextMenu);
+
     }
 
     public void onButtonAction(ActionEvent actionEvent) {
@@ -136,7 +155,7 @@ public class ClientFormController {
                     fxmlLoader.setLocation(Paths.get("src", "main", "java", "gui", "forms", "NewRoomForm.fxml").toUri().toURL());
                     AnchorPane clientForm = (AnchorPane) fxmlLoader.load();
                     Scene scene = new Scene(clientForm);
-                    stage.setResizable(true);
+                    stage.setResizable(false);
                     stage.setScene(scene);
                     stage.setTitle("New Room");
                     stage.show();

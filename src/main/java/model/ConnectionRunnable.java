@@ -7,7 +7,6 @@ import javax.net.ssl.SSLSocket;
 import java.io.DataInputStream;
 import java.io.InputStream;
 import java.util.LinkedList;
-import java.util.TreeMap;
 
 /**
  * Created by SurfinBirb on 07.05.2017.
@@ -56,6 +55,13 @@ public class ConnectionRunnable implements Runnable {
                     Interface.rooms.add( packet.getRoom());
                     Interface.roomObservableMap.get().put(packet.getRoom().getRoomId(), new SimpleListProperty<>(FXCollections.observableList(new LinkedList<>())));
                 }
+
+                if (packet.getType().equals("roomInvitation")){ // TODO: 19.06.2017   Повторяет код выше, допилить
+                    storage.getRooms().put(packet.getRoom().getRoomId(), packet.getRoom());
+                    Interface.rooms.add( packet.getRoom());
+                    Interface.roomObservableMap.get().put(packet.getRoom().getRoomId(), new SimpleListProperty<>(FXCollections.observableList(new LinkedList<>())));
+                }
+
                 if (packet.getType().equals("auth")){
                     if (packet.getAuthData().isLogged()){
                         clientId = packet.getAuthData().getClientId();
