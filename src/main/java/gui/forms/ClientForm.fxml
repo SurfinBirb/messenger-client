@@ -9,10 +9,11 @@
 
 <AnchorPane fx:id="clientForm" prefHeight="412.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.forms.ClientFormController">
    <children>
-      <TextField fx:id="roomSearchField" layoutX="2.0" layoutY="380.0" prefHeight="25.0" prefWidth="144.0" AnchorPane.bottomAnchor="7.0" AnchorPane.leftAnchor="2.0" />
+      <TextField fx:id="roomSearchField" layoutX="2.0" layoutY="380.0" prefHeight="25.0" prefWidth="115.0" AnchorPane.bottomAnchor="7.0" AnchorPane.leftAnchor="2.0" />
       <TextArea fx:id="textField" layoutX="148.0" layoutY="353.0" prefHeight="54.0" prefWidth="395.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="148.0" AnchorPane.rightAnchor="57.0" />
       <ListView fx:id="messageListView" layoutX="148.0" prefHeight="353.0" prefWidth="451.0" AnchorPane.bottomAnchor="59.0" AnchorPane.leftAnchor="148.0" AnchorPane.rightAnchor="1.0" AnchorPane.topAnchor="0.0" />
       <Button fx:id="sendButton" layoutX="543.0" layoutY="353.0" mnemonicParsing="false" onAction="#onButtonAction" prefHeight="54.0" prefWidth="57.0" text="&gt;" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="0.0" />
       <ListView fx:id="roomListView" layoutX="3.0" onMouseClicked="#onRoomListClick" prefHeight="377.0" prefWidth="144.0" AnchorPane.bottomAnchor="35.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
+      <Button fx:id="newRoom" layoutX="120.0" layoutY="380.0" mnemonicParsing="false" onAction="#newRoom" prefHeight="25.0" prefWidth="26.0" text="+" AnchorPane.bottomAnchor="7.0" />
    </children>
 </AnchorPane>

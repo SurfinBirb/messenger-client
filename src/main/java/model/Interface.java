@@ -6,6 +6,7 @@ import javafx.collections.ObservableList;
 
 import java.io.FileOutputStream;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.TreeMap;
 
 /**
@@ -128,6 +129,29 @@ public class Interface {
                 e.printStackTrace();
             }
         }
+    }
+
+    public static void tryToCreateNewRoom(String name){
+        Storage storage = Storage.getInstance();
+        List<Long> acesslist = new LinkedList<>();
+        acesslist.add(storage.getClientId());
+        Room room = new Room(
+                storage.getClientId(),
+                null,
+                name,
+                acesslist,
+                null
+                );
+        Packet packet = new Packet(
+                "room",
+                null,
+                room,
+                storage.getClientId(),
+                null,
+                null
+                );
+        String xmlPacket = new Packer().pack(packet);
+        Sender.send(xmlPacket);
     }
 
     /**

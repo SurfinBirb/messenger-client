@@ -54,6 +54,7 @@ public class ConnectionRunnable implements Runnable {
                 if (packet.getType().equals("room")){
                     storage.getRooms().put(packet.getRoom().getRoomId(), packet.getRoom());
                     Interface.rooms.add( packet.getRoom());
+                    Interface.roomObservableMap.get().put(packet.getRoom().getRoomId(), new SimpleListProperty<>(FXCollections.observableList(new LinkedList<>())));
                 }
                 if (packet.getType().equals("auth")){
                     if (packet.getAuthData().isLogged()){

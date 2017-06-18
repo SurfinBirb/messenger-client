@@ -8,15 +8,20 @@ import javafx.collections.MapChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 import model.Interface;
 import model.Message;
 import model.Room;
 
+import java.nio.file.Paths;
 import java.util.LinkedList;
 
 /**
@@ -30,25 +35,30 @@ public class ClientFormController {
     @FXML
     public TextArea textField;
 
-    public ListView<Message> getMessageListView() {
-        return messageListView;
-    }
-
     @FXML
     public ListView<Message> messageListView;
 
     @FXML
     public ListView<Room> roomListView;
 
+    @FXML
+    public Button newRoom;
+
     private Long currentRoomId;
 
     private ObservableList<Room> roomObservableList = FXCollections.observableList(new LinkedList<Room>());
+
+    private Stage newRoomStage;
 
     public void initialize() {
 
         MapChangeListener<Long, ListProperty<Message>> newMapChangeListener = change -> { // map listener
             if(change.wasAdded()){
                 roomObservableList.add(Interface.getRoomMap().get(change.getKey()));
+                Platform.runLater(() -> {
+                    if(newRoomStage != null) newRoomStage.close();
+                    newRoom.setDisable(false);
+                });
             }
         };
 
@@ -113,6 +123,31 @@ public class ClientFormController {
         if(roomListView.getSelectionModel().getSelectedItem() != null) {
             currentRoomId = roomListView.getSelectionModel().getSelectedItem().getRoomId();
             messageListView.setItems(Interface.roomObservableMap.get(currentRoomId).get());
+        }
+    }
+
+    public void newRoom(ActionEvent actionEvent){
+        newRoom.setDisable(true);
+        try {
+            Platform.runLater(() -> {
+                try {
+                    Stage stage = new Stage();
+                    FXMLLoader fxmlLoader = new FXMLLoader();
+                    fxmlLoader.setLocation(Paths.get("src", "main", "java", "gui", "forms", "NewRoomForm.fxml").toUri().toURL());
+                    AnchorPane clientForm = (AnchorPane) fxmlLoader.load();
+                    Scene scene = new Scene(clientForm);
+                    stage.setResizable(true);
+                    stage.setScene(scene);
+                    stage.setTitle("New Room");
+                    stage.show();
+                    stage.setOnCloseRequest(we -> newRoom.setDisable(false));
+                    newRoomStage = stage;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
+        }catch (Exception e){
+            e.printStackTrace();
         }
     }
 
